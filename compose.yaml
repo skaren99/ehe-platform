@@ -1,0 +1,80 @@
+name: ehe-local
+services:
+  site-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ehe
+      POSTGRES_USER: ehe
+      POSTGRES_PASSWORD: ${SITE_DB_PASSWORD:?Run node scripts/setup-local.mjs}
+    volumes: [site-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U ehe -d ehe"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  wedding-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ehe
+      POSTGRES_USER: ehe
+      POSTGRES_PASSWORD: ${WEDDING_DB_PASSWORD:?Run node scripts/setup-local.mjs}
+    volumes: [wedding-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U ehe -d ehe"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.1
+    command: [start-dev, --import-realm, --http-port=8180]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: bootstrap
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Run node scripts/setup-local.mjs}
+      KC_HOSTNAME: http://localhost:8180
+    ports: ["127.0.0.1:8180:8180"]
+    volumes:
+      - ./keycloak/ehe-realm.json:/opt/keycloak/data/import/ehe-realm.json:ro
+      - identity-data:/opt/keycloak/data/h2
+  site-service:
+    build: ../ehe-site-service
+    environment:
+      DATABASE_URL: jdbc:postgresql://site-db:5432/ehe
+      DATABASE_USER: ehe
+      DATABASE_PASSWORD: ${SITE_DB_PASSWORD}
+      OIDC_ISSUER: http://localhost:8180/realms/ehe
+      OIDC_JWK_URI: http://keycloak:8180/realms/ehe/protocol/openid-connect/certs
+    ports: ["127.0.0.1:8081:8081"]
+    depends_on:
+      site-db: { condition: service_healthy }
+  wedding-service:
+    build: ../ehe-wedding-service
+    environment:
+      DATABASE_URL: jdbc:postgresql://wedding-db:5432/ehe
+      DATABASE_USER: ehe
+      DATABASE_PASSWORD: ${WEDDING_DB_PASSWORD}
+      OIDC_ISSUER: http://localhost:8180/realms/ehe
+      OIDC_JWK_URI: http://keycloak:8180/realms/ehe/protocol/openid-connect/certs
+      EHE_DEMO: "true"
+    ports: ["127.0.0.1:8082:8082"]
+    depends_on:
+      wedding-db: { condition: service_healthy }
+  website:
+    build: ../ehe-website
+    ports: ["127.0.0.1:5173:80"]
+    depends_on: [site-service, wedding-service]
+  admin:
+    build: ../ehe-admin
+    ports: ["127.0.0.1:5174:80"]
+    depends_on: [site-service, wedding-service]
+  client-portal:
+    build: ../ehe-client-portal
+    ports: ["127.0.0.1:5175:80"]
+    depends_on: [site-service, wedding-service]
+  planner-portal:
+    build: ../ehe-planner-portal
+    ports: ["127.0.0.1:5176:80"]
+    depends_on: [site-service, wedding-service]
+volumes:
+  site-data:
+  wedding-data:
+  identity-data:

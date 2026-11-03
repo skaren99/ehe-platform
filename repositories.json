@@ -1,0 +1,42 @@
+[
+  {
+    "name": "ehe-website",
+    "directory": "../ehe-website",
+    "suggestedRemote": "git@github.com:skaren99/ehe-website.git"
+  },
+  {
+    "name": "ehe-admin",
+    "directory": "../ehe-admin",
+    "suggestedRemote": "git@github.com:skaren99/ehe-admin.git"
+  },
+  {
+    "name": "ehe-client-portal",
+    "directory": "../ehe-client-portal",
+    "suggestedRemote": "git@github.com:skaren99/ehe-client-portal.git"
+  },
+  {
+    "name": "ehe-planner-portal",
+    "directory": "../ehe-planner-portal",
+    "suggestedRemote": "git@github.com:skaren99/ehe-planner-portal.git"
+  },
+  {
+    "name": "ehe-site-service",
+    "directory": "../ehe-site-service",
+    "suggestedRemote": "git@github.com:skaren99/ehe-site-service.git"
+  },
+  {
+    "name": "ehe-wedding-service",
+    "directory": "../ehe-wedding-service",
+    "suggestedRemote": "git@github.com:skaren99/ehe-wedding-service.git"
+  },
+  {
+    "name": "ehe-platform",
+    "directory": "../ehe-platform",
+    "suggestedRemote": "git@github.com:skaren99/ehe-platform.git"
+  },
+  {
+    "name": "ehe-design-archive",
+    "directory": "../ehe-design-archive",
+    "suggestedRemote": "git@github.com:skaren99/ehe-design-archive.git"
+  }
+]

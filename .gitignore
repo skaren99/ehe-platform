@@ -1,0 +1,5 @@
+node_modules/
+.env
+keycloak/ehe-realm.json
+LOCAL-CREDENTIALS.md
+*.log
