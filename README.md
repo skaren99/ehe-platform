@@ -49,10 +49,10 @@ Each frontend and service has its own GitHub Actions workflow and Dockerfile. Re
 
 ## GitHub handover
 
-Eight initial `main` branches are prepared using `skaren99 <karensaksakulm@gmail.com>`. They are independent repositories. No GitHub repository has been created, no remote configured, and no push performed.
+Eight initial `main` branches were prepared using `skaren99 <karensaksakulm@gmail.com>`. They are independent repositories. On 9 November 2026, the user confirmed creation of the eight empty GitHub repositories and requested publishing these commits.
 
 1. Create eight empty GitHub repositories with the names in the table. Do not auto-create a README, license or `.gitignore`. Choose private visibility unless you have deliberately reviewed the source and photograph for public release.
-2. Configure GitHub SSH authentication on your machine.
+2. Sign in to GitHub using Git Credential Manager for HTTPS. Existing SSH origins are also supported if SSH authentication is configured.
 3. Preview the push targets from this repository:
 
 ```powershell
@@ -64,7 +64,7 @@ Eight initial `main` branches are prepared using `skaren99 <karensaksakulm@gmail
 You can also push one repository manually:
 
 ```sh
-git remote add origin git@github.com:skaren99/ehe-website.git
+git remote add origin https://github.com/skaren99/ehe-website.git
 git push -u origin main
 ```
 
